@@ -1,28 +1,25 @@
 import gym
-from ballbeam.envs.ballbeam_setpoint_env import BallBeamSetpointEnv
 
-TIME_STEP = 0.05
-SETPOINT = None
-MAX_ANGLE = 0.2
-BEAM_LENGTH = 1.0
+# pass env arguments as kwargs
+kwargs = {'time_step': 0.05, 
+          'setpoint': 0.4,
+          'beam_length': 1.0,
+          'max_angle': 0.2}
 
-env = BallBeamSetpointEnv(time_step=TIME_STEP, 
-                          setpoint=SETPOINT,
-                          beam_length=BEAM_LENGTH,
-                          max_angle=MAX_ANGLE)
+# create env
+env = gym.make('BallBeamSetpoint-v0', **kwargs)
 
+# constans for PID calculation
 Kp = 2.0
 Kd = 1.0
 
-for i in range(1000):
-    # PID-calculation (I-part skipped since it only hurts here)  
+# simulate 1000 steps
+for i in range(1000):   
+    # control theta with a PID controller
     theta = Kp*(env.bb.x - env.setpoint) + Kd*(env.bb.v)
     obs, reward, done, info = env.step(theta)
     env.render()
-    if done:
-        env.reset()
 
-env.close()
 
 
 
