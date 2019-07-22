@@ -26,7 +26,7 @@ kwargs = {'time_step': 0.05,
 # create env
 env = gym.make('BallBeamSetpoint-v0', **kwargs)
 
-# constans for PID calculation
+# constants for PID calculation
 Kp = 2.0
 Kd = 1.0
 
