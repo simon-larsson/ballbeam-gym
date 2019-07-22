@@ -1,6 +1,12 @@
 # Ball &amp; Beam Gym
 Ball & beam simulation as OpenAI gym environments.
 
+## Installation
+Clone the repository and run the following inside the folder:
+
+    pip install -e .
+
+
 ## System Dynamics
 Simulated as a first order system that takes the beam angle as input. The equation that describe the system is as follows:
 
