@@ -38,7 +38,7 @@ class PID():
 pid = PID(SETPOINT, Kp, Ki, Kd)
 
 for i in range(1000):
-    theta = pid.update(env.bb.x, 0.05)
+    theta = pid.update(env.bb.x, TIME_STEP)
     obs, reward, done, info = env.step(theta)
     env.render()
 
