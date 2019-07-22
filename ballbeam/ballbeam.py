@@ -122,10 +122,11 @@ class BallBeam():
         ax.set(xlim = (-2*radius, 2*radius), ylim = (-.3, .3))
         
         # draw ball
-        ax.plot(self.r, .1,'r.', ms=50)
+        ax.plot(self.r, 0.1,'r.', ms=50)
         # draw beam
         ax.plot([-cos(self.theta)*radius, cos(self.theta)*radius], 
-                [-sin(self.theta)*radius, sin(self.theta)*radius], lw=5)
+                [-sin(self.theta)*radius, sin(self.theta)*radius], lw=5, color='black')
+        ax.plot(0.0, 0.0, '.', ms=20)
 
         if setpoint is not None:
             ax.add_patch(Polygon( \
