@@ -4,8 +4,8 @@ from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2
 from ballbeam.envs.ballbeam_balance_env import BallBeamBalanceEnv
 from ballbeam.envs.ballbeam_setpoint_env import BallBeamSetpointEnv
-from ballbeam.envs.ballbeam_throw_env import BallBeamThrowEnv
 
+#env = BallBeamBalanceEnv(time_step=0.05)
 env = BallBeamSetpointEnv(time_step=0.05, setpoint=0.4)
 env = DummyVecEnv([lambda: env])
 model = PPO2(MlpPolicy, env, verbose=1)

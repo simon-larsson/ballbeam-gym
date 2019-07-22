@@ -2,7 +2,7 @@ import gym
 from ballbeam.envs.ballbeam_setpoint_env import BallBeamSetpointEnv
 
 TIME_STEP = 0.05
-SETPOINT = 0.5
+SETPOINT = 0.4
 MAX_ANGLE = 0.2
 
 env = BallBeamSetpointEnv(time_step=TIME_STEP, 
@@ -17,7 +17,6 @@ for i in range(1000):
     theta = Kp*(env.bb.x - SETPOINT) + Kd*(env.bb.v)
     obs, reward, done, info = env.step(theta)
     env.render()
-
     if done:
         env.reset()
 
