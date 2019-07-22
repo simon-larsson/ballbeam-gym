@@ -12,7 +12,7 @@ from ballbeam.ballbeam import BallBeam
 class BallBeamBalanceEnv(gym.Env, EzPickle):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, time_step=0.1, max_angle=0.2):
+    def __init__(self, time_step=0.1, beam_length=1.0, max_angle=0.2):
         self.time_step = time_step
 
         # angle
@@ -21,7 +21,9 @@ class BallBeamBalanceEnv(gym.Env, EzPickle):
         self.observation_space = spaces.Box(low=np.array([-max_angle, -np.inf, -np.inf]), 
                                             high=np.array([max_angle, np.inf, np.inf]))
 
-        self.bb = BallBeam(time_step=self.time_step, 
+        self.bb = BallBeam(time_step=self.time_step,
+                           beam_length=beam_length,
+                           max_angle=max_angle,
                            init_velocity=np.random.rand())
 
     def step(self, action):

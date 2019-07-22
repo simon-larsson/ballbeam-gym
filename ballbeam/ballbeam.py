@@ -8,7 +8,7 @@ gym environments.
 
 from math import sin, cos
 import matplotlib.pyplot as plt
-from matplotlib.patches import Polygon
+from matplotlib.patches import Polygon, Circle
 
 class BallBeam():
     """ Ball & Beam
@@ -27,11 +27,11 @@ class BallBeam():
     rot_speed : speed the angle can be changed with (rad/s)
     """
 
-    def __init__(self, time_step=0.05, init_velocity=0.0, max_angle=0.2):
+    def __init__(self, time_step=0.05, beam_length=1.0, max_angle=0.2, init_velocity=0.0):
         self.dt = time_step                 # time step
         self.g = 9.82                       # gravity
-        self.r = 0.055                      # ball radius
-        self.L = 1                          # beam length
+        self.r = 0.05                       # ball radius
+        self.L = beam_length                # beam length
         self.I = 2/5*self.r**2              # solid ball inertia (omits mass)
         self.init_velocity = init_velocity  # initial velocity
         self.max_angle = max_angle          # max beam angle (rad)
@@ -86,6 +86,35 @@ class BallBeam():
         # update time
         self.t += self.dt
 
+    def _init_render(self, setpoint):
+        """ Initialize rendering """
+        radius = self.L/2
+
+        plt.ion()
+        fig, ax = plt.subplots(1, 1, figsize=(8, 4))
+        fig.canvas.set_window_title('Beam & Ball')
+        ax.set(xlim = (-2*radius, 2*radius), ylim = (-self.L/2, self.L/2))
+        
+        # draw ball
+        self.ball_plot = Circle((self.x, self.y), self.r)
+        ax.add_patch(self.ball_plot)
+        ax.patches[0].set_color('red')
+        # draw beam
+        ax.plot([-cos(self.theta)*radius, cos(self.theta)*radius], 
+                [-sin(self.theta)*radius, sin(self.theta)*radius], lw=4, color='black')
+        ax.plot(0.0, 0.0, '.', ms=20)
+
+        if setpoint is not None:
+            ax.add_patch(Polygon( \
+                [[setpoint*cos(self.theta), -0.01*self.L + setpoint*sin(self.theta)],
+                 [setpoint*cos(self.theta) - 0.015*self.L, -0.03*self.L + setpoint*sin(self.theta)],
+                 [setpoint*cos(self.theta) + 0.015*self.L, -0.03*self.L + setpoint*sin(self.theta)]]))
+            ax.patches[1].set_color('red')
+
+        self.fig = fig
+        self.ax = ax
+        self.rendered = True
+
     def render(self, setpoint=None):
         """ Render simulation at it's current state
 
@@ -97,47 +126,19 @@ class BallBeam():
             self._init_render(setpoint)
 
         # update ball
-        self.ax.lines[0].set(xdata=self.x, ydata=self.y)
+        self.ball_plot.set_center((self.x, self.y))
         # update beam
-        self.ax.lines[1].set(xdata=self.lim_x, ydata=self.lim_y)
+        self.ax.lines[0].set(xdata=self.lim_x, ydata=self.lim_y)
 
         if setpoint is not None:
-            self.ax.patches[0].set_xy( \
-                [[setpoint*cos(self.theta), -0.01 + setpoint*sin(self.theta)],
-                 [setpoint*cos(self.theta) - 0.015, -0.03 + setpoint*sin(self.theta)],
-                 [setpoint*cos(self.theta) + 0.015, -0.03 + setpoint*sin(self.theta)]])
-            self.ax.patches[0].set_color('red')
+            self.ax.patches[1].set_xy( \
+                [[setpoint*cos(self.theta), -0.01*self.L + setpoint*sin(self.theta)],
+                 [setpoint*cos(self.theta) - 0.015*self.L, -0.03*self.L + setpoint*sin(self.theta)],
+                 [setpoint*cos(self.theta) + 0.015*self.L, -0.03*self.L + setpoint*sin(self.theta)]])
 
         # update figure
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
-
-    def _init_render(self, setpoint):
-        """ Initialize rendering """
-        radius = self.L/2
-
-        plt.ion()
-        fig, ax = plt.subplots(1, 1, figsize=(8, 3))
-        fig.canvas.set_window_title('Beam & Ball')
-        ax.set(xlim = (-2*radius, 2*radius), ylim = (-.3, .3))
-        
-        # draw ball
-        ax.plot(self.r, 0.1,'r.', ms=50)
-        # draw beam
-        ax.plot([-cos(self.theta)*radius, cos(self.theta)*radius], 
-                [-sin(self.theta)*radius, sin(self.theta)*radius], lw=5, color='black')
-        ax.plot(0.0, 0.0, '.', ms=20)
-
-        if setpoint is not None:
-            ax.add_patch(Polygon( \
-                [[setpoint*cos(self.theta), -0.01 + setpoint*sin(self.theta)],
-                 [setpoint*cos(self.theta) - 0.015, -0.03 + setpoint*sin(self.theta)],
-                 [setpoint*cos(self.theta) + 0.015, -0.03 + setpoint*sin(self.theta)]]))
-            ax.patches[0].set_color('red')
-
-        self.fig = fig
-        self.ax = ax
-        self.rendered = True
 
     @property
     def on_beam(self):
