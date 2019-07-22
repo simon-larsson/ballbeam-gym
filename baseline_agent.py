@@ -5,8 +5,20 @@ from stable_baselines import PPO2
 from ballbeam.envs.ballbeam_balance_env import BallBeamBalanceEnv
 from ballbeam.envs.ballbeam_setpoint_env import BallBeamSetpointEnv
 
-#env = BallBeamBalanceEnv(time_step=0.05)
-env = BallBeamSetpointEnv(time_step=0.05, setpoint=0.4)
+TIME_STEP = 0.05
+SETPOINT = None
+MAX_ANGLE = 0.2
+BEAM_LENGTH = 1.0
+
+#env = BallBeamSetpointEnv(time_step=TIME_STEP, 
+#                          setpoint=SETPOINT,
+#                          beam_length=BEAM_LENGTH,
+#                          max_angle=MAX_ANGLE)
+
+env = BallBeamBalanceEnv(time_step=TIME_STEP, 
+                          beam_length=BEAM_LENGTH,
+                          max_angle=MAX_ANGLE)
+
 env = DummyVecEnv([lambda: env])
 model = PPO2(MlpPolicy, env, verbose=1)
 
