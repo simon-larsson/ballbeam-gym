@@ -102,7 +102,7 @@ The environments use the same API and inherits from OpenAI gyms.
 
 ---
 
-## Example with PID
+## Example: PID Controller
 ```python
 import gym
 
@@ -127,7 +127,7 @@ for i in range(1000):
     env.render()
 ```
 
-## Example with reinforcement learning
+## Example: Reinforcement Learning
 ```python
 import gym
 from stable_baselines.common.policies import MlpPolicy
