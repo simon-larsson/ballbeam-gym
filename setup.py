@@ -4,7 +4,7 @@ with open("README.md", "r") as f:
     long_description = f.read()
 
 setup(
-    name='ballbeam-gym',
+    name='ballbeam_gym',
     version='0.0.1',
     description='Ball & beam environments for OpenAI gym',
     long_description=long_description,

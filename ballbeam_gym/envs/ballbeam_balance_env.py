@@ -3,7 +3,7 @@ import numpy as np
 import gym
 from gym import spaces
 from gym.utils import seeding, EzPickle
-from ballbeam.ballbeam import BallBeam
+from ballbeam_gym.ballbeam import BallBeam
 
 class BallBeamBalanceEnv(gym.Env, EzPickle):
     metadata = {'render.modes': ['human']}
