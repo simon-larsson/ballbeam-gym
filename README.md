@@ -105,6 +105,7 @@ The environments use the same API and inherits from OpenAI gyms.
 ## Example: PID Controller
 ```python
 import gym
+import ballbeam_gym
 
 # pass env arguments as kwargs
 kwargs = {'time_step': 0.05, 
@@ -130,6 +131,7 @@ for i in range(1000):
 ## Example: Reinforcement Learning
 ```python
 import gym
+import ballbeam_gym
 from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2
