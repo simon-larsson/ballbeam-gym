@@ -43,12 +43,12 @@ Ball is given a random initial velocity and it is the agents job to stabilize th
 - `beam_length` - Length of beam.
 - `max_angle` - Max/min angle of beam.
 
-**Observation Space:** 
+**Observation Space** 
 - Beam angle
 - Ball position on beam.
 - Ball velocity
 
-**Action Space:**
+**Action Space**
 - Beam angle
 
 **Rewards**
@@ -71,13 +71,13 @@ The agent's job is to keep the ball's position as close as possible to a setpoin
 - `beam_length` - Length of beam.
 - `max_angle` - Max/min angle of beam.
 
-**Observation Space:** 
+**Observation Space** 
 - Beam angle
 - Ball position
 - Ball velocity
 - Setpoint position
 
-**Action Space:**
+**Action Space**
 - Beam angle
 
 **Rewards**
