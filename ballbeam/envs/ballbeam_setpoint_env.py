@@ -8,13 +8,16 @@ from ballbeam.ballbeam import BallBeam
 class BallBeamSetpointEnv(gym.Env, EzPickle):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, time_step=0.1, setpoint=None, beam_length=1.0, max_angle=0.2):
-        self.time_step = time_step
+    def __init__(self, timestep=0.1, setpoint=None, beam_length=1.0, max_angle=0.2):
+        self.timestep = timestep
 
         if setpoint is None:
             self.setpoint = np.random.random_sample()*beam_length - beam_length/2
             self.random_setpoint = True
-        else:    
+        else:
+            if abs(setpoint) > beam_length/2:
+                raise ValueError('Setpoint outside of beam.')
+
             self.setpoint = setpoint
             self.random_setpoint = False
 
@@ -23,10 +26,10 @@ class BallBeamSetpointEnv(gym.Env, EzPickle):
         # angle
         self.action_space = spaces.Box(low=np.array([-max_angle]), high=np.array([max_angle]))
                                                     # [angle, position, velocity, setpoint]
-        self.observation_space = spaces.Box(low=np.array([-max_angle, -np.inf, -np.inf, -0.5]), 
-                                            high=np.array([max_angle, np.inf, np.inf, 0.5]))
+        self.observation_space = spaces.Box(low=np.array([-max_angle, -np.inf, -np.inf, -beam_length/2]), 
+                                            high=np.array([max_angle, np.inf, np.inf, beam_length/2]))
 
-        self.bb = BallBeam(time_step=self.time_step,
+        self.bb = BallBeam(timestep=self.timestep,
                            max_angle=max_angle,
                            beam_length=beam_length)
 
@@ -49,7 +52,7 @@ class BallBeamSetpointEnv(gym.Env, EzPickle):
 
     def render(self, mode='human', close=False):
         self.bb.render(self.setpoint)
-        time.sleep(self.time_step - 0.01)
+        time.sleep(self.timestep - 0.01)
 
     def seed(self, seed):
         np.random.seed(seed)

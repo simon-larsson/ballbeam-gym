@@ -27,8 +27,8 @@ class BallBeam():
     rot_speed : speed the angle can be changed with (rad/s)
     """
 
-    def __init__(self, time_step=0.05, beam_length=1.0, max_angle=0.2, init_velocity=0.0):
-        self.dt = time_step                 # time step
+    def __init__(self, timestep=0.05, beam_length=1.0, max_angle=0.2, init_velocity=0.0):
+        self.dt = timestep                 # time step
         self.g = 9.82                       # gravity
         self.r = 0.05                       # ball radius
         self.L = beam_length                # beam length
