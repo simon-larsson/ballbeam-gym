@@ -1,3 +1,6 @@
+[![PyPI version](https://badge.fury.io/py/ballbeam-gym.svg)](https://pypi.python.org/pypi/ballbeam-gym/) 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/simon-larsson/ballbeam-gym/blob/master/LICENSE)
+
 # Ball &amp; Beam Gym
 Ball & beam simulation as OpenAI gym environments.
 
