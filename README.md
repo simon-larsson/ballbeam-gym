@@ -4,6 +4,8 @@
 # Ball &amp; Beam Gym
 Ball & beam simulation as OpenAI gym environments.
 
+---
+
 ## Installation
 
 Run command:
@@ -14,6 +16,7 @@ or clone the repository and run the following inside the folder:
 
     pip install -e .
 
+---
 
 ## System Dynamics
 Simulated as a frictionless first order system that takes the beam angle as input. The equation that describe the system is as follows:
@@ -23,9 +26,13 @@ Simulated as a frictionless first order system that takes the beam angle as inpu
 
 [![visualization](ballbeam.png)](https://github.com/simon-larsson/ballbeam-gym)
 
+---
+
 ## Environments
 - **BallBeamBalanceEnv** - Objective is to not drop the ball from the beam.
 - **BallBeamSetpointEnv** - Objective is to keep the ball as close to a set position on the beam as possible.
+
+---
 
 ### BallBeamBalanceEnv
 
@@ -51,6 +58,8 @@ A reward of +1 is given for each timestep ball stays on beam.
 **Reset**
 
 Resets when ball falls of beam.
+
+---
 
 ### BallBeamSetpointEnv
 
@@ -81,6 +90,8 @@ At each timestep the agent is rewarded with the squared proximity between the ba
 
 Resets when ball falls of beam.
 
+---
+
 ## API
 
 The environments use the same API and inherits from OpenAI gyms.
@@ -88,6 +99,8 @@ The environments use the same API and inherits from OpenAI gyms.
 - `reset()` - Reset environment to start conditions.
 - `render()` - Visualize one timestep.
 - `seed(seed)` - Make environment deterministic.
+
+---
 
 ## Example with PID
 ```python
