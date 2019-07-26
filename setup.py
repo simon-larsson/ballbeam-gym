@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name='ballbeam_gym',
-    version='0.0.2',
+    version='0.0.3',
     description='Ball & beam environments for OpenAI gym',
     long_description=long_description,
     long_description_content_type='text/markdown',
