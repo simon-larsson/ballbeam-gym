@@ -29,10 +29,10 @@ Simulated as a frictionless first order system that takes the beam angle as inpu
 ---
 
 ## Environments
-- **BallBeamBalanceEnv** - Objective is to not drop the ball from the beam using key state variables as observation space.
-- **VisualBallBeamBalanceEnv** - Same as above but only using simulation plot as observation space.
-- **BallBeamSetpointEnv** - Objective is to keep the ball as close to a set position on the beam as possible using key state variables as observation space.
-- **VisualBallBeamBalanceEnv** - Same as above but only using simulation plot as observation space.
+- [BallBeamBalanceEnv](https://github.com/simon-larsson/ballbeam-gym#ballbeambalanceenv) - Objective is to not drop the ball from the beam using key state variables as observation space.
+- [VisualBallBeamBalanceEnv](https://github.com/simon-larsson/ballbeam-gym#visualballbeambalanceenv) - Same as above but only using simulation plot as observation space.
+- [BallBeamSetpointEnv](https://github.com/simon-larsson/ballbeam-gym#ballbeamsetpointenv) - Objective is to keep the ball as close to a set position on the beam as possible using key state variables as observation space.
+- [VisualBallBeamSetpointEnv](https://github.com/simon-larsson/ballbeam-gym#visualballbeamsetpointenv) - Same as above but only using simulation plot as observation space.
 
 #### Alias
 - `BallBeamBalance-v0`
