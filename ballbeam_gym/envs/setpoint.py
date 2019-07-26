@@ -81,7 +81,7 @@ class BallBeamSetpointEnv(BallBeamBaseEnv):
         -------
         observation : simulation state, np.ndarray (state variables)
         """
-        super.reset()
+        super().reset()
         
         if self.random_setpoint is None:
             self.setpoint = np.random.random_sample()*self.beam_length \
@@ -155,7 +155,7 @@ class VisualBallBeamSetpointEnv(VisualBallBeamBaseEnv):
         -------
         observation : simulation state, np.ndarray (state variables)
         """
-        super.reset()
+        super().reset()
         
         if self.random_setpoint is None:
             self.setpoint = np.random.random_sample()*self.beam_length \

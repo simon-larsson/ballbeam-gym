@@ -69,7 +69,7 @@ class BallBeamBalanceEnv(BallBeamBaseEnv):
         -------
         observation : simulation state, np.ndarray (state variables)
         """
-        super.reset()
+        super().reset()
         return np.array([self.bb.theta, self.bb.x, self.bb.v])
 
 class VisualBallBeamBalanceEnv(VisualBallBeamBaseEnv):

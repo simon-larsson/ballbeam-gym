@@ -177,7 +177,7 @@ class VisualBallBeamBaseEnv(BallBeamBaseEnv):
         -------
         observation : simulation state, np.ndarray (image)
         """
-        super.reset()
+        super().reset()
         return self._get_state()
 
     def render(self, mode='human', close=False):
@@ -190,7 +190,7 @@ class VisualBallBeamBaseEnv(BallBeamBaseEnv):
 
         close : not used, bool
         """
-        super.render(**{'mode': mode, 'close': close})
+        super().render(**{'mode': mode, 'close': close})
 
     def _get_state(self):
         """
