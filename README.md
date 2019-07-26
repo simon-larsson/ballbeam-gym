@@ -29,19 +29,39 @@ Simulated as a frictionless first order system that takes the beam angle as inpu
 ---
 
 ## Environments
-- **BallBeamBalanceEnv** - Objective is to not drop the ball from the beam.
-- **BallBeamSetpointEnv** - Objective is to keep the ball as close to a set position on the beam as possible.
+- **BallBeamBalanceEnv** - Objective is to not drop the ball from the beam using key state variables as observation space.
+- **VisualBallBeamBalanceEnv** - Same as above but only using simulation plot as observation space.
+- **BallBeamSetpointEnv** - Objective is to keep the ball as close to a set position on the beam as possible using key state variables as observation space.
+- **VisualBallBeamBalanceEnv** - Same as above but only using simulation plot as observation space.
+
+#### Alias
+- `BallBeamBalance-v0`
+- `VisualBallBeamBalance-v0`
+- `BallBeamSetpoint-v0`
+- `VisualBallBeamSetpoint-v0`
+
+---
+
+## API
+
+The environments use the same API and inherits from OpenAI gyms.
+- `step(action)` - Simulate one timestep.
+- `reset()` - Reset environment to start conditions.
+- `render(mode='human')` - Visualize one timestep.
+- `seed(seed)` - Make environment deterministic.
 
 ---
 
 ### BallBeamBalanceEnv
 
-Ball is given a random initial velocity and it is the agents job to stabilize the ball on the beam.
+Ball is given a random or set initial velocity and it is the agents job to stabilize the ball on the beam using a set of key state variables.
 
 **Parameters**
 - `timestep` - Length of a timestep.
 - `beam_length` - Length of beam.
-- `max_angle` - Max/min angle of beam.
+- `max_angle` - Max abs(angle) of beam.
+- `init_velocity` - Initial speed of ball (`None` for random).
+- `action_mode` - Continuous or discrete action space.
 
 **Observation Space** 
 - Beam angle
@@ -49,7 +69,46 @@ Ball is given a random initial velocity and it is the agents job to stabilize th
 - Ball velocity
 
 **Action Space**
+
+Continuous:
 - Beam angle
+
+Discrete:
+- Increase angle
+- Descrease angle
+
+**Rewards**
+
+A reward of +1 is given for each timestep ball stays on beam.
+
+**Reset**
+
+Resets when ball falls of beam.
+
+---
+
+### VisualBallBeamBalanceEnv
+
+Ball is given a random or set initial velocity and it is the agents job to stabilize the ball on the beam using a image data from the simulation plot.
+
+**Parameters**
+- `timestep` - Length of a timestep.
+- `beam_length` - Length of beam.
+- `max_angle` - Max abs(angle) of beam.
+- `init_velocity` - Initial speed of ball (`None` for random).
+- `action_mode` - Continuous or discrete action space.
+
+**Observation Space** 
+- RGB image [200x250x3]
+
+**Action Space**
+
+Continuous:
+- Beam angle
+
+Discrete:
+- Increase angle
+- Descrease angle
 
 **Rewards**
 
@@ -63,13 +122,15 @@ Resets when ball falls of beam.
 
 ### BallBeamSetpointEnv
 
-The agent's job is to keep the ball's position as close as possible to a setpoint.
+The agent's job is to keep the ball's position as close as possible to a setpoint using a set of key state variables.
 
 **Parameters**
 - `timestep` - Length of a timestep.
-- `setpoint` - Ball setpoint position on beam (`None` for random).
 - `beam_length` - Length of beam.
-- `max_angle` - Max/min angle of beam.
+- `max_angle` - Max abs(angle) of beam.
+- `init_velocity` - Initial speed of ball (`None` for random).
+- `action_mode` - Continuous or discrete action space.
+- `setpoint` - Target position of ball (`None` for random).
 
 **Observation Space** 
 - Beam angle
@@ -78,7 +139,13 @@ The agent's job is to keep the ball's position as close as possible to a setpoin
 - Setpoint position
 
 **Action Space**
+
+Continuous:
 - Beam angle
+
+Discrete:
+- Increase angle
+- Descrease angle
 
 **Rewards**
 
@@ -92,13 +159,39 @@ Resets when ball falls of beam.
 
 ---
 
-## API
+### VisualBallBeamSetpointEnv
 
-The environments use the same API and inherits from OpenAI gyms.
-- `step(action)` - Simulate one timestep.
-- `reset()` - Reset environment to start conditions.
-- `render()` - Visualize one timestep.
-- `seed(seed)` - Make environment deterministic.
+The agent's job is to keep the ball's position as close as possible to a setpoint using a image data from the simulation plot.
+
+**Parameters**
+- `timestep` - Length of a timestep.
+- `beam_length` - Length of beam.
+- `max_angle` - Max abs(angle) of beam.
+- `init_velocity` - Initial speed of ball (`None` for random).
+- `action_mode` - Continuous or discrete action space.
+- `setpoint` - Target position of ball (`None` for random).
+
+**Observation Space** 
+- RGB image [200x250x3]
+
+**Action Space**
+
+Continuous:
+- Beam angle
+
+Discrete:
+- Increase angle
+- Descrease angle
+
+**Rewards**
+
+At each timestep the agent is rewarded with the squared proximity between the ball and the setpoint: 
+
+`reward = (1 - (setpoint - ball_position)/beam_length)^2`.
+
+**Reset**
+
+Resets when ball falls of beam.
 
 ---
 
@@ -108,10 +201,12 @@ import gym
 import ballbeam_gym
 
 # pass env arguments as kwargs
-kwargs = {'time_step': 0.05, 
+kwargs = {'timestep': 0.05, 
           'setpoint': 0.4,
           'beam_length': 1.0,
-          'max_angle': 0.2}
+          'max_angle': 0.2,
+          'init_velocity': 0.0,
+          'action_mode': 'continuous'}
 
 # create env
 env = gym.make('BallBeamSetpoint-v0', **kwargs)
@@ -123,9 +218,13 @@ Kd = 1.0
 # simulate 1000 steps
 for i in range(1000):   
     # control theta with a PID controller
+    env.render()
     theta = Kp*(env.bb.x - env.setpoint) + Kd*(env.bb.v)
     obs, reward, done, info = env.step(theta)
-    env.render()
+
+    if done:
+        env.reset()
+
 ```
 
 ## Example: Reinforcement Learning
@@ -137,13 +236,14 @@ from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2
 
 # pass env arguments as kwargs
-kwargs = {'time_step': 0.05, 
+kwargs = {'timestep': 0.05, 
           'setpoint': 0.4,
           'beam_length': 1.0,
-          'max_angle': 0.2}
+          'max_angle': 0.2,
+          'init_velocity': 0.0,
+          'action_mode': 'discrete'}
 
 # create env
-#env = gym.make('BallBeamBalance-v0', **kwargs)
 env = gym.make('BallBeamSetpoint-v0', **kwargs)
 
 # train a mlp policy agent
