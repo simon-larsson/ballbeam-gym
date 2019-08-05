@@ -80,12 +80,17 @@ class BallBeam():
         self.theta = theta 
 
         if self.on_beam:
+            x = self.x
+            y = self.y
+
             # dynamics on beam
-            self.v += -self.g/(1 + self.I)*sin(self.theta)*self.dt
-            self.v_x = self.v*cos(self.theta) + self.dtheta*self.r*sin(self.theta)
-            self.v_y = self.v*sin(self.theta) + self.dtheta*self.r*cos(self.theta)
+            self.v += -self.g/(1 + self.I)*sin(self.theta)*self.dt            
             self.x += self.v*self.dt
             self.y = self.r/cos(self.theta) + self.x*sin(self.theta)
+
+            # keep track of velocities for x and y
+            self.v_x = (self.x - x)/self.dt
+            self.v_y = (self.y - y)/self.dt
         else:
             # free fall dynamics off beam
             self.v_y -= self.g*self.dt
