@@ -68,7 +68,7 @@ class BallBeamThrowEnv(BallBeamBaseEnv):
             v0 = sqrt(self.bb.v_y**2 + self.bb.v_x**2)
             angle = atan(self.bb.v_y / self.bb.v_x)
             
-            distance = (v0**2/self.bb.g)*(1 + sqrt(1 + (2*self.bb.g*self.bb.y)/v0**2*sin(angle)**2))*sin(2*angle)
+            distance = (v0**2/self.bb.g)*(1 + sqrt(1 + (2*self.bb.g*self.bb.y)/v0**2*sin(angle)**2))*sin(2*angle) - self.bb.r
             reward = max(reward, distance)    
             self.left_beam = True
         
@@ -138,7 +138,7 @@ class VisualBallBeamThrowEnv(VisualBallBeamBaseEnv):
             v0 = sqrt(self.bb.v_y**2 + self.bb.v_x**2)
             angle = atan(self.bb.v_y / self.bb.v_x)
             
-            distance = (v0**2/self.bb.g)*(1 + sqrt(1 + (2*self.bb.g*self.bb.y)/v0**2*sin(angle)**2))*sin(2*angle)
+            distance = (v0**2/self.bb.g)*(1 + sqrt(1 + (2*self.bb.g*self.bb.y)/v0**2*sin(angle)**2))*sin(2*angle) - self.bb.r
             reward = max(reward, distance)    
             self.left_beam = True
 
