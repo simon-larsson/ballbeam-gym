@@ -53,6 +53,7 @@ class BallBeam():
         self.y = self.r                         # ball position y
         self.v = self.init_velocity             # ball velocity
         self.theta = 0.0                        # beam angle (rad)
+        self.dtheta = 0.0                       # beam angle change (rad)
         self.v_x = 0.0                          # velocity x component
         self.v_y = 0.0                          # velocity y component
         self.lim_x = [-cos(self.theta)*radius,  # geam limits x
@@ -72,13 +73,17 @@ class BallBeam():
 
         # simulation could be improved further by using voltage as input and a
         # motor simulation deciding theta     
-        self.theta = max(-self.max_angle, min(self.max_angle, angle))
+        theta = max(-self.max_angle, min(self.max_angle, angle))
+        
+        # store angle change for angular velocity
+        self.dtheta = theta - self.theta
+        self.theta = theta 
 
         if self.on_beam:
             # dynamics on beam
             self.v += -self.g/(1 + self.I)*sin(self.theta)*self.dt
-            self.v_x = self.v*cos(self.theta)
-            self.v_y = self.v*sin(self.theta)
+            self.v_x = self.v*cos(self.theta) + self.dtheta*self.r*sin(self.theta)
+            self.v_y = self.v*sin(self.theta) + self.dtheta*self.r*cos(self.theta)
             self.x += self.v*self.dt
             self.y = self.r/cos(self.theta) + self.x*sin(self.theta)
         else:

@@ -5,7 +5,7 @@ Environments where the objective is to keep the ball on the beam
 
 BallBeamBalanceEnv - Balance environment with a state consisting of key state variables
 
-VisualBallBeamBalance - Balance environment with simulation plot as state
+VisualBallBeamBalanceEnv - Balance environment with simulation plot as state
 """
 
 import numpy as np

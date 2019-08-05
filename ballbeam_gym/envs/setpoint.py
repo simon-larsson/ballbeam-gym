@@ -3,9 +3,9 @@ Setpoint Environments
 
 Environments where the objective is to keep the ball close to a set beam postion
 
-BallBeamBalanceEnv - Balance environment with a state consisting of key state variables
+BallBeamSetpointEnv - Setpoint environment with a state consisting of key variables
 
-VisualBallBeamBalance - Balance environment with simulation plot as state
+VisualBallBeamSetpointEnv - Setpoint environment with simulation plot as state
 """
 
 import numpy as np
@@ -155,13 +155,12 @@ class VisualBallBeamSetpointEnv(VisualBallBeamBaseEnv):
         -------
         observation : simulation state, np.ndarray (state variables)
         """
-        super().reset()
         
         if self.random_setpoint is None:
             self.setpoint = np.random.random_sample()*self.beam_length \
                             - self.beam_length/2
 
-        return self._get_state()
+        return super().reset()
 
 
 

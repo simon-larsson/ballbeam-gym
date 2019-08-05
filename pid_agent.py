@@ -24,9 +24,3 @@ for i in range(1000):
 
     if done:
         env.reset()
-
-
-
-
-
-
