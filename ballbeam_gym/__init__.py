@@ -19,3 +19,13 @@ register(
     id='VisualBallBeamSetpoint-v0',
     entry_point='ballbeam_gym.envs:VisualBallBeamSetpointEnv',
 )
+
+register(
+    id='BallBeamThrow-v0',
+    entry_point='ballbeam_gym.envs:BallBeamThrowEnv',
+)
+
+register(
+    id='VisualBallBeamThrow-v0',
+    entry_point='ballbeam_gym.envs:VisualBallBeamThrowEnv',
+)
