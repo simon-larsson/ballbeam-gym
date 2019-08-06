@@ -33,12 +33,16 @@ Simulated as a frictionless first order system that takes the beam angle as inpu
 - [VisualBallBeamBalanceEnv](https://github.com/simon-larsson/ballbeam-gym#visualballbeambalanceenv) - Same as above but only using simulation plot as observation space.
 - [BallBeamSetpointEnv](https://github.com/simon-larsson/ballbeam-gym#ballbeamsetpointenv) - Objective is to keep the ball as close to a set position on the beam as possible using key state variables as observation space.
 - [VisualBallBeamSetpointEnv](https://github.com/simon-larsson/ballbeam-gym#visualballbeamsetpointenv) - Same as above but only using simulation plot as observation space.
+- [BallBeamThrowEnv](https://github.com/simon-larsson/ballbeam-gym#ballbeamthrowenv) - Objective is to throw the ball as far as possible to the right possible using key state variables as observation space.
+- [VisualBallBeamThrowEnv](https://github.com/simon-larsson/ballbeam-gym#visualballbeamthrowenv) - Same as above but only using simulation plot as observation space.
 
 #### Alias
 - `BallBeamBalance-v0`
 - `VisualBallBeamBalance-v0`
 - `BallBeamSetpoint-v0`
 - `VisualBallBeamSetpoint-v0`
+- `BallBeamThrow-v0`
+- `VisualBallBeamThrow-v0`
 
 ---
 
@@ -64,22 +68,22 @@ Ball is given a random or set initial velocity and it is the agents job to stabi
 - `action_mode` - Continuous or discrete action space.
 
 **Observation Space** 
-- Beam angle
+- Beam angle.
 - Ball position on beam.
-- Ball velocity
+- Ball velocity.
 
 **Action Space**
 
 Continuous:
-- Beam angle
+- Beam angle.
 
 Discrete:
-- Increase angle
-- Descrease angle
+- Increase angle.
+- Descrease angle.
 
 **Rewards**
 
-A reward of +1 is given for each timestep ball stays on beam.
+A reward of 1 is given for each timestep ball stays on beam.
 
 **Reset**
 
@@ -99,20 +103,20 @@ Ball is given a random or set initial velocity and it is the agents job to stabi
 - `action_mode` - Continuous or discrete action space.
 
 **Observation Space** 
-- RGB image [200x250x3]
+- RGB image [200x250x3].
 
 **Action Space**
 
 Continuous:
-- Beam angle
+- Beam angle.
 
 Discrete:
-- Increase angle
-- Descrease angle
+- Increase angle.
+- Descrease angle.
 
 **Rewards**
 
-A reward of +1 is given for each timestep ball stays on beam.
+A reward of 1 is given for each timestep ball stays on beam.
 
 **Reset**
 
@@ -133,19 +137,19 @@ The agent's job is to keep the ball's position as close as possible to a setpoin
 - `setpoint` - Target position of ball (`None` for random).
 
 **Observation Space** 
-- Beam angle
-- Ball position
-- Ball velocity
-- Setpoint position
+- Beam angle.
+- Ball position.
+- Ball velocity.
+- Setpoint position.
 
 **Action Space**
 
 Continuous:
-- Beam angle
+- Beam angle.
 
 Discrete:
-- Increase angle
-- Descrease angle
+- Increase angle.
+- Descrease angle.
 
 **Rewards**
 
@@ -172,16 +176,16 @@ The agent's job is to keep the ball's position as close as possible to a setpoin
 - `setpoint` - Target position of ball (`None` for random).
 
 **Observation Space** 
-- RGB image [200x250x3]
+- RGB image [200x250x3].
 
 **Action Space**
 
 Continuous:
-- Beam angle
+- Beam angle.
 
 Discrete:
-- Increase angle
-- Descrease angle
+- Increase angle.
+- Descrease angle.
 
 **Rewards**
 
@@ -192,6 +196,74 @@ At each timestep the agent is rewarded with the squared proximity between the ba
 **Reset**
 
 Resets when ball falls of beam.
+
+---
+
+### BallBeamBalanceEnv
+
+Ball is given a random or set initial velocity and it is the agents job to stabilize the ball on the beam using a set of key state variables.
+
+**Parameters**
+- `timestep` - Length of a timestep.
+- `beam_length` - Length of beam.
+- `max_angle` - Max abs(angle) of beam.
+- `init_velocity` - Initial speed of ball (`None` for random).
+- `action_mode` - Continuous or discrete action space.
+
+**Observation Space** 
+- Beam angle.
+- Ball position on beam.
+- Ball velocity.
+
+**Action Space**
+
+Continuous:
+- Beam angle.
+
+Discrete:
+- Increase angle.
+- Descrease angle.
+
+**Rewards**
+
+Is rewarded the calculated distance the ball would travel in x direction when it leaves the beam. Reward for a negative distance is set to 0.
+
+**Reset**
+
+Resets when ball leaves the beam.
+
+---
+
+### VisualBallBeamThrowEnv
+
+Ball is given a random or set initial velocity and it is the agents job to stabilize the ball on the beam using a image data from the simulation plot.
+
+**Parameters**
+- `timestep` - Length of a timestep.
+- `beam_length` - Length of beam.
+- `max_angle` - Max abs(angle) of beam.
+- `init_velocity` - Initial speed of ball (`None` for random).
+- `action_mode` - Continuous or discrete action space.
+
+**Observation Space** 
+- RGB image [200x250x3].
+
+**Action Space**
+
+Continuous:
+- Beam angle.
+
+Discrete:
+- Increase angle.
+- Descrease angle.
+
+**Rewards**
+
+Is rewarded the calculated distance the ball would travel in x direction when it leaves the beam. Reward for a negative distance is set to 0.
+
+**Reset**
+
+Resets when ball leaves the beam.
 
 ---
 
