@@ -58,13 +58,14 @@ The environments use the same API and inherits from OpenAI gyms.
 
 ### BallBeamBalanceEnv
 
-Ball is given a random or set initial velocity and it is the agents job to stabilize the ball on the beam using a set of key state variables.
+Ball is given a random or set initial velocity and it is the agent's job to stabilize the ball on the beam using a set of key state variables.
 
 **Parameters**
 - `timestep` - Length of a timestep.
 - `beam_length` - Length of beam.
 - `max_angle` - Max abs(angle) of beam.
 - `init_velocity` - Initial speed of ball (`None` for random).
+- `max_timesteps` - Max timesteps in an episode (`None` for infinate).
 - `action_mode` - Continuous or discrete action space.
 
 **Observation Space** 
@@ -75,10 +76,11 @@ Ball is given a random or set initial velocity and it is the agents job to stabi
 **Action Space**
 
 Continuous:
-- Beam angle.
+- Set angle.
 
 Discrete:
 - Increase angle.
+- Keep angle.
 - Descrease angle.
 
 **Rewards**
@@ -87,31 +89,33 @@ A reward of 1 is given for each timestep ball stays on beam.
 
 **Reset**
 
-Resets when ball falls of beam.
+Resets when ball falls of beam or max timesteps are reached.
 
 ---
 
 ### VisualBallBeamBalanceEnv
 
-Ball is given a random or set initial velocity and it is the agents job to stabilize the ball on the beam using a image data from the simulation plot.
+Ball is given a random or set initial velocity and it is the agent's job to stabilize the ball on the beam using a image data from the simulation plot.
 
 **Parameters**
 - `timestep` - Length of a timestep.
 - `beam_length` - Length of beam.
 - `max_angle` - Max abs(angle) of beam.
 - `init_velocity` - Initial speed of ball (`None` for random).
+- `max_timesteps` - Max timesteps in an episode (`None` for infinate).
 - `action_mode` - Continuous or discrete action space.
 
 **Observation Space** 
-- RGB image [200x250x3].
+- RGB image [350x260x3].
 
 **Action Space**
 
 Continuous:
-- Beam angle.
+- Set angle.
 
 Discrete:
 - Increase angle.
+- Keep angle.
 - Descrease angle.
 
 **Rewards**
@@ -120,7 +124,7 @@ A reward of 1 is given for each timestep ball stays on beam.
 
 **Reset**
 
-Resets when ball falls of beam.
+Resets when ball falls of beam or max timesteps are reached.
 
 ---
 
@@ -133,6 +137,7 @@ The agent's job is to keep the ball's position as close as possible to a setpoin
 - `beam_length` - Length of beam.
 - `max_angle` - Max abs(angle) of beam.
 - `init_velocity` - Initial speed of ball (`None` for random).
+- `max_timesteps` - Max timesteps in an episode (`None` for infinate).
 - `action_mode` - Continuous or discrete action space.
 - `setpoint` - Target position of ball (`None` for random).
 
@@ -145,10 +150,11 @@ The agent's job is to keep the ball's position as close as possible to a setpoin
 **Action Space**
 
 Continuous:
-- Beam angle.
+- Set angle.
 
 Discrete:
 - Increase angle.
+- Keep angle.
 - Descrease angle.
 
 **Rewards**
@@ -159,7 +165,7 @@ At each timestep the agent is rewarded with the squared proximity between the ba
 
 **Reset**
 
-Resets when ball falls of beam.
+Resets when ball falls of beam or max timesteps are reached.
 
 ---
 
@@ -172,19 +178,21 @@ The agent's job is to keep the ball's position as close as possible to a setpoin
 - `beam_length` - Length of beam.
 - `max_angle` - Max abs(angle) of beam.
 - `init_velocity` - Initial speed of ball (`None` for random).
+- `max_timesteps` - Max timesteps in an episode (`None` for infinate).
 - `action_mode` - Continuous or discrete action space.
 - `setpoint` - Target position of ball (`None` for random).
 
 **Observation Space** 
-- RGB image [200x250x3].
+- RGB image [350x260x3].
 
 **Action Space**
 
 Continuous:
-- Beam angle.
+- Set angle.
 
 Discrete:
 - Increase angle.
+- Keep angle.
 - Descrease angle.
 
 **Rewards**
@@ -195,19 +203,20 @@ At each timestep the agent is rewarded with the squared proximity between the ba
 
 **Reset**
 
-Resets when ball falls of beam.
+Resets when ball falls of beam or max timesteps are reached.
 
 ---
 
-### BallBeamBalanceEnv
+### BallBeamThrowEnv
 
-Ball is given a random or set initial velocity and it is the agents job to stabilize the ball on the beam using a set of key state variables.
+The agent's job is to throw the ball as far as possible to the right using a set of key state variables.
 
 **Parameters**
 - `timestep` - Length of a timestep.
 - `beam_length` - Length of beam.
 - `max_angle` - Max abs(angle) of beam.
 - `init_velocity` - Initial speed of ball (`None` for random).
+- `max_timesteps` - Max timesteps in an episode (`None` for infinate).
 - `action_mode` - Continuous or discrete action space.
 
 **Observation Space** 
@@ -218,10 +227,11 @@ Ball is given a random or set initial velocity and it is the agents job to stabi
 **Action Space**
 
 Continuous:
-- Beam angle.
+- Set angle.
 
 Discrete:
 - Increase angle.
+- Keep angle.
 - Descrease angle.
 
 **Rewards**
@@ -230,31 +240,33 @@ Is rewarded the calculated distance the ball would travel in x direction when it
 
 **Reset**
 
-Resets when ball leaves the beam.
+Resets when ball leaves the beam or max timesteps are reached.
 
 ---
 
 ### VisualBallBeamThrowEnv
 
-Ball is given a random or set initial velocity and it is the agents job to stabilize the ball on the beam using a image data from the simulation plot.
+The agent's job is to throw the ball as far as possible to the right using a image data from the simulation plot.
 
 **Parameters**
 - `timestep` - Length of a timestep.
 - `beam_length` - Length of beam.
 - `max_angle` - Max abs(angle) of beam.
 - `init_velocity` - Initial speed of ball (`None` for random).
+- `max_timesteps` - Max timesteps in an episode (`None` for infinate).
 - `action_mode` - Continuous or discrete action space.
 
 **Observation Space** 
-- RGB image [200x250x3].
+- RGB image [350x260x3].
 
 **Action Space**
 
 Continuous:
-- Beam angle.
+- Set angle.
 
 Discrete:
 - Increase angle.
+- Keep angle.
 - Descrease angle.
 
 **Rewards**
@@ -263,7 +275,7 @@ Is rewarded the calculated distance the ball would travel in x direction when it
 
 **Reset**
 
-Resets when ball leaves the beam.
+Resets when ball leaves the beam or max timesteps are reached.
 
 ---
 
