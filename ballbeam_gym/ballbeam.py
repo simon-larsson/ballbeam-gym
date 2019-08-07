@@ -43,8 +43,8 @@ class BallBeam():
         self.init_velocity = init_velocity  # initial velocity
         self.max_angle = max_angle          # max beam angle (rad)
         self.reset()
-        self.rendered = False
         self.human_rendered = False
+        self.machine_rendered = False
 
     def reset(self):
         radius = self.L/2                       # beam radius
@@ -132,7 +132,10 @@ class BallBeam():
                     [setpoint*cos(self.theta) + 0.015*self.L, -0.03*self.L + setpoint*sin(self.theta)]]))
                 ax.patches[1].set_color('red')
 
+            self.fig = fig
+            self.ax = ax
         else:
+            self.machine_rendered = True
             fig, ax = plt.subplots(1, 1, figsize=(8, 4))
 
             # avoid drawing plot but still initialize
@@ -155,9 +158,8 @@ class BallBeam():
                     [setpoint*cos(self.theta) + 0.015*self.L, -0.03*self.L + setpoint*sin(self.theta)]]))
                 _ = ax.patches[1].set_color('red')
 
-        self.fig = fig
-        self.ax = ax
-        self.rendered = True
+            self.machine_fig = fig
+            self.machine_ax = ax
 
     def render(self, setpoint=None, mode='human'):
         """ 
@@ -169,8 +171,8 @@ class BallBeam():
 
         mode : rendering mode, str [human, machine]
         """
-        if not self.rendered or \
-           (not self.human_rendered and mode == 'human'):
+        if (not self.human_rendered and mode == 'human') or \
+           (not self.machine_rendered and mode == 'machine'):
             self._init_render(setpoint, mode)
 
         if mode == 'human':
@@ -194,18 +196,18 @@ class BallBeam():
             # update ball
             _ = self.ball_plot.set_center((self.x, self.y))
             # update beam
-            _ = self.ax.lines[0].set(xdata=self.lim_x, ydata=self.lim_y)
+            _ = self.machine_ax.lines[0].set(xdata=self.lim_x, ydata=self.lim_y)
 
             # mark setpoint
             if setpoint is not None:
-                _ = self.ax.patches[1].set_xy( \
+                _ = self.machine_ax.patches[1].set_xy( \
                     [[setpoint*cos(self.theta), -0.01*self.L + setpoint*sin(self.theta)],
                     [setpoint*cos(self.theta) - 0.015*self.L, -0.03*self.L + setpoint*sin(self.theta)],
                     [setpoint*cos(self.theta) + 0.015*self.L, -0.03*self.L + setpoint*sin(self.theta)]])
 
             # update figure
-            _ = self.fig.canvas.draw()
-            _ = self.fig.canvas.flush_events()
+            _ = self.machine_fig.canvas.draw()
+            _ = self.machine_fig.canvas.flush_events()
 
 
     @property
