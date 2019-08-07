@@ -27,19 +27,23 @@ class BallBeamSetpointEnv(BallBeamBaseEnv):
 
     init_velocity : initial speed of ball, float (units/s)
 
+    max_timesteps : maximum length of an episode, int
+
     action_mode : action space, str ['continuous', 'discrete']
 
     setpoint : target position of ball, float (units)
     """
 
     def __init__(self, timestep=0.1, beam_length=1.0, max_angle=0.2, 
-                 init_velocity=0.0, action_mode='continuous', setpoint=None):
+                 init_velocity=0.0, max_timesteps=100, action_mode='continuous', 
+                 setpoint=None):
                  
         kwargs = {'timestep': timestep,
                   'beam_length': beam_length,
-                  'max_angle':max_angle, 
-                  'action_mode':action_mode, 
-                  'init_velocity': init_velocity}
+                  'max_angle':max_angle,
+                  'init_velocity': init_velocity,
+                  'max_timesteps': max_timesteps,
+                  'action_mode':action_mode}
 
         super().__init__(**kwargs)
 
@@ -65,13 +69,15 @@ class BallBeamSetpointEnv(BallBeamBaseEnv):
         action [continuous] : set angle, float (rad)
         action [discrete] : increase/descrease angle, int [0, 1]
         """
+        super().step()
+
         self.bb.update(self._action_conversion(action))
         obs = np.array([self.bb.theta, self.bb.x, self.bb.v, self.setpoint])
 
         # reward squared proximity to setpoint 
         reward = (1.0 - (self.setpoint - self.bb.x)/self.bb.L)**2
         
-        return obs, reward, not self.bb.on_beam, {}
+        return obs, reward, self.done, {}
 
     def reset(self):
         """ 
@@ -104,19 +110,23 @@ class VisualBallBeamSetpointEnv(VisualBallBeamBaseEnv):
 
     init_velocity : initial speed of ball, float (units/s)
 
+    max_timesteps : maximum length of an episode, int
+
     action_mode : action space, str ['continuous', 'discrete']
 
     setpoint : target position of ball, float (units)
     """
     
     def __init__(self, timestep=0.1, beam_length=1.0, max_angle=0.2, 
-                 init_velocity=0.0, action_mode='continuous', setpoint=None):
+                 init_velocity=0.0, max_timesteps=100, action_mode='continuous', 
+                 setpoint=None):
 
         kwargs = {'timestep': timestep,
                   'beam_length': beam_length,
-                  'max_angle':max_angle, 
-                  'action_mode':action_mode, 
-                  'init_velocity': init_velocity}
+                  'max_angle':max_angle,
+                  'init_velocity': init_velocity,
+                  'max_timesteps': max_timesteps,
+                  'action_mode':action_mode}
 
         super().__init__(**kwargs)
 
@@ -137,15 +147,17 @@ class VisualBallBeamSetpointEnv(VisualBallBeamBaseEnv):
         Parameters
         ----------
         action [continuous] : set angle, float (rad)
-        action [discrete] : increase/descrease angle, int [0, 1]
+        action [discrete] : increase/keep/descrease angle, int [0, 1, 2]
         """
+        super().step()
+
         self.bb.update(self._action_conversion(action))
         obs = self._get_state()
 
         # reward squared proximity to setpoint 
         reward = (1.0 - (self.setpoint - self.bb.x)/self.bb.L)**2
-        
-        return obs, reward, not self.bb.on_beam, {}
+
+        return obs, reward, self.done, {}
 
     def reset(self):
         """ 
