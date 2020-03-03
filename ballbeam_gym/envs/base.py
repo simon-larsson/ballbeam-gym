@@ -38,6 +38,8 @@ class BallBeamBaseEnv(gym.Env, EzPickle):
 
     def __init__(self, timestep=0.1, beam_length=1.0, max_angle=0.2, 
                  init_velocity=0.0, max_timesteps=100, action_mode='continuous'):
+
+        EzPickle.__init__(self)
         
         self.timestep = timestep
         self.beam_length = beam_length
