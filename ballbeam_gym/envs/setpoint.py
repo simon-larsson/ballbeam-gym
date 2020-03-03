@@ -56,9 +56,15 @@ class BallBeamSetpointEnv(BallBeamBaseEnv):
                 raise ValueError('Setpoint outside of beam.')
             self.setpoint = setpoint
             self.random_setpoint = False
-                                                            # [angle, position, velocity, setpoint]
-        self.observation_space = spaces.Box(low=np.array([-max_angle, -np.inf, -np.inf, -beam_length/2]), 
-                                            high=np.array([max_angle, np.inf, np.inf, beam_length/2]))
+                                # [angle, position, velocity, setpoint]
+        self.observation_space = spaces.Box(low=np.array([-max_angle,
+                                                          -np.inf,
+                                                          -np.inf,
+                                                          -beam_length/2]),
+                                            high=np.array([max_angle, 
+                                                           np.inf, 
+                                                           np.inf, 
+                                                           beam_length/2]))
 
     def step(self, action):
         """
