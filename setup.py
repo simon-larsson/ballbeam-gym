@@ -1,11 +1,12 @@
 from setuptools import setup, find_packages
+import ballbeam_gym
 
 with open("README.md", "r") as f:
     long_description = f.read()
 
 setup(
     name='ballbeam_gym',
-    version='0.0.4',
+    version=ballbeam_gym.__version__,
     description='Ball & beam environments for OpenAI gym',
     long_description=long_description,
     long_description_content_type='text/markdown',
