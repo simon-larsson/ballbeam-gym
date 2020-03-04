@@ -199,7 +199,7 @@ Discrete:
 
 At each timestep the agent is rewarded with the squared proximity between the ball and the setpoint: 
 
-`reward = (1 - (setpoint - ball_position)/beam_length)^2`.
+`reward = (1 - abs(setpoint - ball_position)/beam_length)^2`.
 
 **Reset**
 
